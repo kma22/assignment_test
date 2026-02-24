@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pipes/domain/board_controller.dart';
 import 'package:pipes/domain/models/pipe.dart';
+import 'package:pipes/presentation/theme/app_colors_theme.dart';
 import 'package:pipes/presentation/widgets/game/pipe_painter.dart';
 
 class PipeTile extends StatefulWidget {
@@ -82,7 +83,10 @@ class _PipeTileState extends State<PipeTile> with SingleTickerProviderStateMixin
               );
             },
             child: CustomPaint(
-              painter: PipePainter(pipe: pipe),
+              painter: PipePainter(
+                pipe: pipe,
+                colors: Theme.of(context).extension<AppColorsTheme>()!,
+              ),
             ),
           ),
         );

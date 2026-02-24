@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pipes/domain/board_controller.dart';
 import 'package:pipes/domain/models/pipe.dart';
-import 'package:pipes/presentation/theme/app_colors.dart';
+import 'package:pipes/presentation/theme/app_colors_theme.dart';
 
 class StatusBar extends StatelessWidget {
   const StatusBar({
@@ -13,6 +13,7 @@ class StatusBar extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
+    final colors = Theme.of(context).extension<AppColorsTheme>()!;
     return SizedBox(
       height: kToolbarHeight * 2,
       child: ValueListenableBuilder<List<Pipe>>(
@@ -27,7 +28,7 @@ class StatusBar extends StatelessWidget {
                 'Victory! Score: $score',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  color: AppColors.secondary,
+                  color: colors.secondary,
                 ),
               ),
             );
@@ -37,7 +38,7 @@ class StatusBar extends StatelessWidget {
                 'Score: $score',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: colors.onSurface,
                 ),
               ),
             );

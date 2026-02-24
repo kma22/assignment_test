@@ -29,6 +29,7 @@ class AudioManager {
 
   Future<void> playPress() async {
     if (!_soundEnabled) return;
+    await _sfxPlayer.stop();
     await _sfxPlayer.setVolume(_volume);
     await _sfxPlayer.play(AssetSource('sounds/press.mp3'));
   }
