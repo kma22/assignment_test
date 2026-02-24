@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:pipes/domain/audio_manager.dart';
 import 'package:pipes/domain/models/difficulty.dart';
@@ -44,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  FutureOr<void> _start(final Difficulty difficulty) async {
+  Future<void> _start(final Difficulty difficulty) async {
     await Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => GameScreen(size: difficulty.size),

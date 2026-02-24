@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class ConfettiController extends ChangeNotifier {
   bool _playing = false;
+
   bool get playing => _playing;
 
   void play() {
@@ -17,9 +18,10 @@ class ConfettiController extends ChangeNotifier {
 }
 
 class ConfettiOverlay extends StatefulWidget {
-  const ConfettiOverlay({required this.controller, super.key});
+  const ConfettiOverlay({required this.controller, required this.colors, super.key});
 
   final ConfettiController controller;
+  final List<Color> colors;
 
   @override
   State<ConfettiOverlay> createState() => _ConfettiOverlayState();
@@ -66,19 +68,10 @@ class _ConfettiOverlayState extends State<ConfettiOverlay> with SingleTickerProv
         rotation: random.nextDouble() * 2 * pi,
         rotationSpeed: (random.nextDouble() - 0.5) * 6,
         drift: (random.nextDouble() - 0.5) * 0.15,
-        colorIndex: random.nextInt(_confettiColors.length),
+        colorIndex: random.nextInt(widget.colors.length),
       );
     });
   }
-
-  static const _confettiColors = [
-    Color(0xFF00E5FF),
-    Color(0xFF76FF03),
-    Color(0xFFFFD600),
-    Color(0xFFFF4081),
-    Color(0xFFAA00FF),
-    Color(0xFFFF6E40),
-  ];
 
   @override
   Widget build(final BuildContext context) {
@@ -94,7 +87,7 @@ class _ConfettiOverlayState extends State<ConfettiOverlay> with SingleTickerProv
             painter: _ConfettiPainter(
               particles: _particles,
               progress: _animation.value,
-              colors: _confettiColors,
+              colors: widget.colors,
             ),
           ),
         );
@@ -104,7 +97,7 @@ class _ConfettiOverlayState extends State<ConfettiOverlay> with SingleTickerProv
 }
 
 class _Particle {
-  _Particle({
+  const _Particle({
     required this.x,
     required this.startY,
     required this.speed,

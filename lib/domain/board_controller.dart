@@ -5,13 +5,9 @@ import 'package:pipes/domain/models/pipe.dart';
 import 'package:pipes/domain/models/side.dart';
 
 class BoardController extends ChangeNotifier implements ValueListenable<List<Pipe>> {
-  BoardController() {
-    _gridNotifier = ValueNotifier<List<Pipe>>([]);
-  }
-
   static final Random _kRandom = Random.secure();
 
-  late final ValueNotifier<List<Pipe>> _gridNotifier;
+  final _gridNotifier = ValueNotifier<List<Pipe>>([]);
 
   int get size => sqrt(_gridNotifier.value.length).toInt();
 

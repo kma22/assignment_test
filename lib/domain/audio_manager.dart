@@ -11,6 +11,8 @@ class AudioManager {
   }
   static final AudioManager instance = AudioManager._();
 
+  static const double _bgVolumeScale = 0.4;
+
   final AudioPlayer _bgPlayer = AudioPlayer();
   final AudioPlayer _sfxPlayer = AudioPlayer();
 
@@ -23,7 +25,7 @@ class AudioManager {
   Future<void> playBackground() async {
     if (!_soundEnabled) return;
     await _bgPlayer.setReleaseMode(ReleaseMode.loop);
-    await _bgPlayer.setVolume(_volume * 0.4);
+    await _bgPlayer.setVolume(_volume * _bgVolumeScale);
     await _bgPlayer.play(AssetSource('sounds/background.mp3'));
   }
 
@@ -52,7 +54,7 @@ class AudioManager {
 
   void setVolume(final double v) {
     _volume = v.clamp(0.0, 1.0);
-    _bgPlayer.setVolume(_volume * 0.4);
+    _bgPlayer.setVolume(_volume * _bgVolumeScale);
   }
 
   Future<void> dispose() async {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pipes/domain/board_controller.dart';
-import 'package:pipes/domain/models/pipe.dart';
 import 'package:pipes/presentation/theme/app_colors_theme.dart';
 
 class StatusBar extends StatelessWidget {
@@ -16,7 +15,7 @@ class StatusBar extends StatelessWidget {
     final colors = Theme.of(context).extension<AppColorsTheme>()!;
     return SizedBox(
       height: kToolbarHeight * 2,
-      child: ValueListenableBuilder<List<Pipe>>(
+      child: ValueListenableBuilder(
         valueListenable: controller,
         builder: (final context, final grid, _) {
           final bool isVictory = controller.isVictory;

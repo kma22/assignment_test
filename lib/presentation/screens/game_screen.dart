@@ -3,6 +3,7 @@ import 'package:pipes/domain/audio_manager.dart';
 import 'package:pipes/domain/board_controller.dart';
 import 'package:pipes/domain/haptic_manager.dart';
 import 'package:pipes/domain/models/pipe.dart';
+import 'package:pipes/presentation/theme/app_colors_theme.dart';
 import 'package:pipes/presentation/widgets/game/confetti_overlay.dart';
 import 'package:pipes/presentation/widgets/game/pipe_tile.dart';
 import 'package:pipes/presentation/widgets/game/status_bar.dart';
@@ -20,25 +21,25 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late final BoardController controller = BoardController();
+  final _controller = BoardController();
   final _confettiController = ConfettiController();
 
   @override
   void initState() {
     super.initState();
-    controller.generateBoard(widget.size);
-    controller.addListener(_checkVictory);
+    _controller.generateBoard(widget.size);
+    _controller.addListener(_checkVictory);
   }
 
   @override
   void dispose() {
-    controller.removeListener(_checkVictory);
+    _controller.removeListener(_checkVictory);
     _confettiController.dispose();
     super.dispose();
   }
 
   void _checkVictory() {
-    if (controller.isVictory) {
+    if (_controller.isVictory) {
       AudioManager.instance.playVictory();
       HapticManager.instance.heavy();
       _confettiController.play();
@@ -46,9 +47,21 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _onPipeTap(final int index) {
-    controller.handleTap(index);
+    _controller.handleTap(index);
     AudioManager.instance.playPress();
     HapticManager.instance.light();
+  }
+
+  List<Color> _confettiColors(final BuildContext context) {
+    final colors = Theme.of(context).extension<AppColorsTheme>()!;
+    return [
+      colors.primary,
+      colors.secondary,
+      colors.terminatorActive,
+      const Color(0xFFFF4081),
+      const Color(0xFFAA00FF),
+      const Color(0xFFFF6E40),
+    ];
   }
 
   @override
@@ -61,8 +74,8 @@ class _GameScreenState extends State<GameScreen> {
       body: Stack(
         children: [
           ValueListenableBuilder<List<Pipe>>(
-            valueListenable: controller,
-            builder: (final context, final grid, _) {
+            valueListenable: _controller,
+            builder: (context, grid, _) {
               return Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: MediaQuery.of(context).size.width * 0.2,
@@ -71,7 +84,7 @@ class _GameScreenState extends State<GameScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     StatusBar(
-                      controller: controller,
+                      controller: _controller,
                     ),
                     const Spacer(),
                     Expanded(
@@ -82,12 +95,12 @@ class _GameScreenState extends State<GameScreen> {
                           child: GridView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: controller.size,
+                              crossAxisCount: _controller.size,
                             ),
                             itemCount: grid.length,
                             itemBuilder: (final context, final index) {
                               return PipeTile(
-                                controller: controller,
+                                controller: _controller,
                                 index: index,
                                 onPressed: () => _onPipeTap(index),
                               );
@@ -100,7 +113,7 @@ class _GameScreenState extends State<GameScreen> {
                     FilledButton(
                       onPressed: () {
                         _confettiController.stop();
-                        controller.generateBoard(widget.size);
+                        _controller.generateBoard(widget.size);
                       },
                       child: const Text('New Game'),
                     ),
@@ -110,7 +123,10 @@ class _GameScreenState extends State<GameScreen> {
               );
             },
           ),
-          ConfettiOverlay(controller: _confettiController),
+          ConfettiOverlay(
+            controller: _confettiController,
+            colors: _confettiColors(context),
+          ),
         ],
       ),
     );
