@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pipes/domain/audio_manager.dart';
 import 'package:pipes/domain/board_controller.dart';
+import 'package:pipes/domain/haptic_manager.dart';
 import 'package:pipes/domain/models/pipe.dart';
 import 'package:pipes/presentation/widgets/game/pipe_tile.dart';
 import 'package:pipes/presentation/widgets/game/status_bar.dart';
@@ -18,11 +20,36 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   late final BoardController controller = BoardController();
+  bool _victoryTriggered = false;
 
   @override
   void initState() {
     super.initState();
     controller.generateBoard(widget.size);
+    controller.addListener(_checkVictory);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_checkVictory);
+    super.dispose();
+  }
+
+  void _checkVictory() {
+    if (controller.isVictory && !_victoryTriggered) {
+      _victoryTriggered = true;
+      AudioManager.instance.playVictory();
+      HapticManager.instance.heavy();
+    }
+    if (!controller.isVictory) {
+      _victoryTriggered = false;
+    }
+  }
+
+  void _onPipeTap(final int index) {
+    controller.handleTap(index);
+    AudioManager.instance.playPress();
+    HapticManager.instance.light();
   }
 
   @override
@@ -61,7 +88,7 @@ class _GameScreenState extends State<GameScreen> {
                           return PipeTile(
                             controller: controller,
                             index: index,
-                            onPressed: () => controller.handleTap(index),
+                            onPressed: () => _onPipeTap(index),
                           );
                         },
                       ),
@@ -70,7 +97,10 @@ class _GameScreenState extends State<GameScreen> {
                 ),
                 const Spacer(),
                 FilledButton(
-                  onPressed: () => controller.generateBoard(widget.size),
+                  onPressed: () {
+                    _victoryTriggered = false;
+                    controller.generateBoard(widget.size);
+                  },
                   child: const Text('New Game'),
                 ),
                 const Spacer(),
