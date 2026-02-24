@@ -64,7 +64,7 @@ class _GameScreenState extends State<GameScreen> {
         builder: (final context, final grid, _) {
           return Padding(
             padding: EdgeInsets.symmetric(
-              vertical: MediaQuery.of(context).size.width * 0.4,
+              vertical: MediaQuery.of(context).size.width * 0.2,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

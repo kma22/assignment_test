@@ -25,6 +25,7 @@ class StatusBar extends StatelessWidget {
             return Center(
               child: Text(
                 'Victory! Score: $score',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: AppColors.secondary,
                 ),
@@ -34,6 +35,7 @@ class StatusBar extends StatelessWidget {
             return Center(
               child: Text(
                 'Score: $score',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: Theme.of(context).colorScheme.onSurface,
                 ),

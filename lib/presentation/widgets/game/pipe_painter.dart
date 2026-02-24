@@ -17,7 +17,7 @@ class PipePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
 
     // Draw lines
-    for (var side in pipe.currentConnections) {
+    for (var side in pipe.initialConnections) {
       final endpoint = switch (side) {
         Side.top => Offset(size.width / 2, 0),
         Side.right => Offset(size.width, size.height / 2),
