@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pipes/presentation/screens/home_screen.dart';
+import 'package:pipes/presentation/theme/app_theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    const MaterialApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      theme: AppTheme.dark,
+      home: const HomeScreen(),
     ),
   );
 }

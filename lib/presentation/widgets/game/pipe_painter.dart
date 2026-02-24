@@ -1,29 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pipes/domain/models/pipe.dart';
 import 'package:pipes/domain/models/side.dart';
+import 'package:pipes/presentation/theme/app_colors.dart';
 
 class PipePainter extends CustomPainter {
-  PipePainter({
-    required this.pipe,
-    required this.inactiveColor,
-    required this.activeColor,
-    required this.terminatorActiveColor,
-    required this.terminatorInativeColor,
-    required this.starterColor,
-  });
+  PipePainter({required this.pipe});
 
   final Pipe pipe;
-  final Color inactiveColor;
-  final Color activeColor;
-  final Color terminatorActiveColor;
-  final Color terminatorInativeColor;
-  final Color starterColor;
 
   @override
   void paint(final Canvas canvas, final Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     final paint = Paint()
-      ..color = pipe.isActivated ? activeColor : inactiveColor
+      ..color = pipe.isActivated ? AppColors.pipeActive : AppColors.pipeInactive
       ..strokeWidth = 5
       ..strokeCap = StrokeCap.round;
 
@@ -41,13 +30,15 @@ class PipePainter extends CustomPainter {
     // Draw specific markers based on sealed type
     switch (pipe) {
       case StarterPipe():
-        canvas.drawCircle(center, 8, paint..color = starterColor);
-        canvas.drawCircle(center, 3, Paint()..color = Colors.white);
+        canvas.drawCircle(center, 8, paint..color = AppColors.starter);
+        canvas.drawCircle(center, 3, Paint()..color = AppColors.white);
       case TerminatorPipe():
         canvas.drawCircle(
           center,
           7,
-          paint..color = pipe.isActivated ? terminatorActiveColor : terminatorInativeColor,
+          paint
+            ..color =
+                pipe.isActivated ? AppColors.terminatorActive : AppColors.terminatorInactive,
         );
       case MiddlePipe():
         canvas.drawCircle(center, 2, paint);

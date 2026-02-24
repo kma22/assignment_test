@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pipes/domain/board_controller.dart';
 import 'package:pipes/domain/models/pipe.dart';
+import 'package:pipes/presentation/theme/app_colors.dart';
 
 class StatusBar extends StatelessWidget {
   const StatusBar({
@@ -25,7 +26,7 @@ class StatusBar extends StatelessWidget {
               child: Text(
                 'Victory! Score: $score',
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  color: Colors.green,
+                  color: AppColors.secondary,
                 ),
               ),
             );

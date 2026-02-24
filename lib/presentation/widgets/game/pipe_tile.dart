@@ -33,14 +33,7 @@ class PipeTile extends StatelessWidget {
               return Transform.rotate(
                 angle: angle,
                 child: CustomPaint(
-                  painter: PipePainter(
-                    pipe: pipe,
-                    inactiveColor: Colors.grey,
-                    activeColor: Colors.green,
-                    terminatorActiveColor: Colors.yellow.shade800,
-                    terminatorInativeColor: Colors.amber.shade200,
-                    starterColor: Colors.green,
-                  ),
+                  painter: PipePainter(pipe: pipe),
                 ),
               );
             },
