@@ -2,7 +2,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ConfettiController extends ChangeNotifier {
-  void play() => notifyListeners();
+  bool _playing = false;
+  bool get playing => _playing;
+
+  void play() {
+    _playing = true;
+    notifyListeners();
+  }
+
+  void stop() {
+    _playing = false;
+    notifyListeners();
+  }
 }
 
 class ConfettiOverlay extends StatefulWidget {
@@ -25,19 +36,23 @@ class _ConfettiOverlayState extends State<ConfettiOverlay> with SingleTickerProv
       duration: const Duration(milliseconds: 3000),
       vsync: this,
     );
-    widget.controller.addListener(_onPlay);
+    widget.controller.addListener(_onChanged);
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_onPlay);
+    widget.controller.removeListener(_onChanged);
     _animation.dispose();
     super.dispose();
   }
 
-  void _onPlay() {
-    _particles = _generateParticles(80);
-    _animation.forward(from: 0);
+  void _onChanged() {
+    if (widget.controller.playing) {
+      _particles = _generateParticles(80);
+      _animation.forward(from: 0);
+    } else {
+      _animation.reset();
+    }
   }
 
   List<_Particle> _generateParticles(final int count) {

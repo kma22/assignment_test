@@ -22,7 +22,6 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   late final BoardController controller = BoardController();
   final _confettiController = ConfettiController();
-  bool _victoryTriggered = false;
 
   @override
   void initState() {
@@ -39,14 +38,10 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _checkVictory() {
-    if (controller.isVictory && !_victoryTriggered) {
-      _victoryTriggered = true;
+    if (controller.isVictory) {
       AudioManager.instance.playVictory();
       HapticManager.instance.heavy();
       _confettiController.play();
-    }
-    if (!controller.isVictory) {
-      _victoryTriggered = false;
     }
   }
 
@@ -104,7 +99,7 @@ class _GameScreenState extends State<GameScreen> {
                     const Spacer(),
                     FilledButton(
                       onPressed: () {
-                        _victoryTriggered = false;
+                        _confettiController.stop();
                         controller.generateBoard(widget.size);
                       },
                       child: const Text('New Game'),
