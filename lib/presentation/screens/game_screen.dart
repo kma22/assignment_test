@@ -43,7 +43,7 @@ class _GameScreenState extends State<GameScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 StatusBar(
-                  controller: BoardController(),
+                  controller: controller,
                 ),
                 const Spacer(),
                 Expanded(
